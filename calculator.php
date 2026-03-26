@@ -1,4 +1,3 @@
-cat > calculator.php << 'EOF'
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -229,6 +228,7 @@ cat > calculator.php << 'EOF'
                 $result = null;
                 $error = null;
                 $symbol = '';
+                $operation_name = '';
                 
                 switch ($operation) {
                     case 'add':
@@ -293,4 +293,3 @@ cat > calculator.php << 'EOF'
     </script>
 </body>
 </html>
-EOF
