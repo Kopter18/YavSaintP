@@ -6,84 +6,106 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 50px;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f4f4f4;
         }
         .calculator {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ccc;
+            background: white;
+            padding: 30px;
             border-radius: 10px;
-            background: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         h2 {
             text-align: center;
+            color: #333;
+            margin-top: 0;
         }
-        .form-group {
-            margin-bottom: 15px;
+        .input-group {
+            margin-bottom: 20px;
         }
         label {
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
+            color: #555;
         }
         input[type="number"] {
             width: 100%;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 4px;
+            border-radius: 5px;
+            font-size: 16px;
             box-sizing: border-box;
         }
         .buttons {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
-            margin-bottom: 15px;
+            margin: 20px 0;
         }
         button {
-            flex: 1;
-            padding: 10px;
+            padding: 12px;
             font-size: 18px;
             border: none;
-            border-radius: 4px;
+            border-radius: 5px;
             cursor: pointer;
-            background: #4CAF50;
+            background: #3498db;
             color: white;
+            transition: background 0.3s;
         }
         button:hover {
-            background: #45a049;
+            background: #2980b9;
         }
         .result {
             margin-top: 20px;
             padding: 15px;
             background: #e8f5e9;
-            border-radius: 4px;
+            border-radius: 5px;
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
         }
         .error {
             background: #ffebee;
             color: #c62828;
         }
+        .clear-btn {
+            background: #95a5a6;
+            margin-top: 10px;
+        }
+        .clear-btn:hover {
+            background: #7f8c8d;
+        }
     </style>
 </head>
 <body>
     <div class="calculator">
-        <h2>Калькулятор</h2>
+        <h2>🧮 Калькулятор</h2>
+        
         <form method="post">
-            <div class="form-group">
-                <label>Число 1:</label>
-                <input type="number" name="num1" step="any" required>
+            <div class="input-group">
+                <label>Первое число:</label>
+                <input type="number" name="num1" step="any" required 
+                       value="<?php echo isset($_POST['num1']) ? htmlspecialchars($_POST['num1']) : ''; ?>">
             </div>
-            <div class="form-group">
-                <label>Число 2:</label>
-                <input type="number" name="num2" step="any" required>
+            
+            <div class="input-group">
+                <label>Второе число:</label>
+                <input type="number" name="num2" step="any" required
+                       value="<?php echo isset($_POST['num2']) ? htmlspecialchars($_POST['num2']) : ''; ?>">
             </div>
+            
             <div class="buttons">
                 <button type="submit" name="operation" value="add">+</button>
                 <button type="submit" name="operation" value="subtract">-</button>
-                <button type="submit" name="operation" value="multiply">*</button>
-                <button type="submit" name="operation" value="divide">/</button>
+                <button type="submit" name="operation" value="multiply">×</button>
+                <button type="submit" name="operation" value="divide">÷</button>
             </div>
+            
+            <button type="reset" class="clear-btn" onclick="clearForm()">Очистить</button>
         </form>
         
         <?php
@@ -109,7 +131,7 @@
                     break;
                 case 'divide':
                     if ($num2 == 0) {
-                        $error = "Ошибка: деление на ноль невозможно!";
+                        $error = "❌ Ошибка: деление на ноль невозможно!";
                     } else {
                         $result = $num1 / $num2;
                         $symbol = '÷';
@@ -121,11 +143,18 @@
                 echo "<div class='result error'>$error</div>";
             } elseif ($result !== null) {
                 echo "<div class='result'>";
-                echo "$num1 $symbol $num2 = " . round($result, 4);
+                echo "📊 $num1 $symbol $num2 = <span style='color: #27ae60;'>" . round($result, 4) . "</span>";
                 echo "</div>";
             }
         }
         ?>
     </div>
+    
+    <script>
+        function clearForm() {
+            document.querySelector('input[name="num1"]').value = '';
+            document.querySelector('input[name="num2"]').value = '';
+        }
+    </script>
 </body>
 </html>
